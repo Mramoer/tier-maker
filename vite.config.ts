@@ -20,5 +20,22 @@ export default defineConfig({
   },
   build: {
     cssMinify: 'lightningcss'
+  },
+  server: {
+    port: 5173, 
+    proxy: {
+      '/try': {
+        target: 'http://localhost:80',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/try/, '')
+      },
+      '/user': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/user/, '')
+      }
+    }
   }
 }) 

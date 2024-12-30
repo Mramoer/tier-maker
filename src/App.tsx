@@ -1,39 +1,78 @@
 import './App.css'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react';
+import User from './database/models/userSchema';
+import { LoginForm } from './client/components/widgets/LoginForm';
+import RegisterForm from './client/components/widgets/RegisterForm';
+import Layout from './client/components/Layout';
 
 function App() {
-  
-  type Todo = {
-    title: string,
-    id: number,
-    userId: number,
-    completed: boolean
-  }
+  const queryClient = useQueryClient();
 
-  function fetchTodos(): Promise<Todo[]> {
-    const data = fetch('https://jsonplaceholder.typicode.com/todos').then(res => res.json())
-    return data
-  }
- 
-  const {isPending, error, data} = useQuery({
-    queryKey: ['repoData'],
-    queryFn: fetchTodos,
+  const jwtMutation = useMutation({
+    mutationFn: async() => {
+      const getToken = () => {
+        const cookie = document.cookie.split('; ').find(c => c.startsWith('authToken='));
+        return cookie ? cookie.split('=')[1] : null; 
+      }
+      const token = getToken();
+      if (!token) {
+        throw new Error('no token provided');
+      }
+
+      fetch('/try/content', {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+    }
   })
 
-  if (isPending) return 'Loading...';
+  // const fetchTodos =  (): Promise<Todo[]> => {
+  //   const data = fetch('/try').then(res => res.json())
+  //   console.log(data)
+  //   return data
+  // }
 
-  if (error) return 'an error occured' + error.message
+  const test = () => {
+    const data = fetch('/try').then(res => res.json())
+      console.log(data)
+    //   return data
+  }
+
+ 
+
+  
+ 
+  // const {isPending, error, data} = useQuery({
+  //   queryKey: ['repoData'],
+  //   queryFn: fetchTodos,
+  //   initialData: [{description: 'hubkle guble', name: 'hello gauy'}]
+  // })
+
+  // if (isPending) return 'Loading...';
+
+  // if (error) return 'an error occured' + error.message
+
+  const hello = () => {
+    fetch('user/registration', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: "1234zadadasd.cadsa@com",
+        password: "124adfadad2"
+      })
+    })
+  }
 
   return (
-    <div>
-      <h1>{data.map((item) => {
-        return (
-          <>
-          <h1>{item.title}</h1>
-          <h2>{item.userId}</h2>
-          </>
-        )
-      })}</h1>
+    <div className='wrapper'>
+      <Layout/>
+      {/* <button onClick={() => jwtMutation.mutate()}>Content</button> */}
+      {document.cookie.includes('authToken') ? <p>Content</p> : <p>You should register first</p>}
     </div>
   )
 }
