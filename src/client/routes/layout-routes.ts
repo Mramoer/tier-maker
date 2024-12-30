@@ -1,5 +1,5 @@
-import { IndexRouteObject, RouteObject } from "react-router-dom";
+import { Route } from "../types/types";
 
-const layoutRoutes: IndexRouteObject = [
+export const layoutRoutes: Route[] = [
     {path: '/reg', element: ''}
 ]

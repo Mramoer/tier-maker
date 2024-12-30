@@ -1,33 +1,29 @@
 import './App.css'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react';
-import User from './database/models/userSchema';
-import { LoginForm } from './client/components/widgets/LoginForm';
-import RegisterForm from './client/components/widgets/RegisterForm';
+// import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Layout from './client/components/Layout';
 
 function App() {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  const jwtMutation = useMutation({
-    mutationFn: async() => {
-      const getToken = () => {
-        const cookie = document.cookie.split('; ').find(c => c.startsWith('authToken='));
-        return cookie ? cookie.split('=')[1] : null; 
-      }
-      const token = getToken();
-      if (!token) {
-        throw new Error('no token provided');
-      }
+  // const jwtMutation = useMutation({
+  //   mutationFn: async() => {
+  //     const getToken = () => {
+  //       const cookie = document.cookie.split('; ').find(c => c.startsWith('authToken='));
+  //       return cookie ? cookie.split('=')[1] : null; 
+  //     }
+  //     const token = getToken();
+  //     if (!token) {
+  //       throw new Error('no token provided');
+  //     }
 
-      fetch('/try/content', {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-    }
-  })
+  //     fetch('/try/content', {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     })
+  //   }
+  // })
 
   // const fetchTodos =  (): Promise<Todo[]> => {
   //   const data = fetch('/try').then(res => res.json())
@@ -35,16 +31,6 @@ function App() {
   //   return data
   // }
 
-  const test = () => {
-    const data = fetch('/try').then(res => res.json())
-      console.log(data)
-    //   return data
-  }
-
- 
-
-  
- 
   // const {isPending, error, data} = useQuery({
   //   queryKey: ['repoData'],
   //   queryFn: fetchTodos,
@@ -53,20 +39,7 @@ function App() {
 
   // if (isPending) return 'Loading...';
 
-  // if (error) return 'an error occured' + error.message
-
-  const hello = () => {
-    fetch('user/registration', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email: "1234zadadasd.cadsa@com",
-        password: "124adfadad2"
-      })
-    })
-  }
+  // if (error) return 'an error occured' + error.messages
 
   return (
     <div className='wrapper'>

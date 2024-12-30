@@ -3,3 +3,8 @@ export type Todo = {
     description: string
     id?: number,
 }
+
+export type Route = {
+    element: string,
+    path: string
+}

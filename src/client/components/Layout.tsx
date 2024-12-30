@@ -1,6 +1,6 @@
-import React from 'react'
-import { LoginForm } from './widgets/LoginForm'
-import RegisterForm from './widgets/RegisterForm'
+// import React from 'react'
+// import { LoginForm } from './widgets/LoginForm'
+// import RegisterForm from './widgets/RegisterForm'
 import {BrowserRouter, Route} from 'react-router-dom'
 
 
