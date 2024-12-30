@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-import { Hmac } from "node:crypto";
 
 export default class User {
     email: string;

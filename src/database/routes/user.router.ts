@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-import {body, query} from 'express-validator';
+import {body} from 'express-validator';
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
