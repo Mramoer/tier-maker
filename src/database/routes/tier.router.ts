@@ -2,7 +2,6 @@ import express, {Response, Request} from 'express';
 import { ObjectId } from 'mongodb';
 import {collections} from '../services/database.service'
 import Tier from '../models/tieritems';
-// import bcrypt from 'bcrypt'
 
 export const tierRouter = express.Router();
 
