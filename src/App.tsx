@@ -1,8 +1,24 @@
-import './App.css'
 // import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Layout from './client/components/Layout';
+import style from './App.module.scss';
+import Tier from './database/models/tieritems';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function App() {
+  const navigate = useNavigate();
+  useEffect((function () {
+    if (document.cookie.includes('authToken')) {
+      navigate('/homepage')
+    }
+    else {
+      navigate('/')
+    }
+  }), [navigate])
+  
+
+
   // const queryClient = useQueryClient();
 
   // const jwtMutation = useMutation({
@@ -25,27 +41,16 @@ function App() {
   //   }
   // })
 
-  // const fetchTodos =  (): Promise<Todo[]> => {
-  //   const data = fetch('/try').then(res => res.json())
-  //   console.log(data)
-  //   return data
-  // }
 
-  // const {isPending, error, data} = useQuery({
-  //   queryKey: ['repoData'],
-  //   queryFn: fetchTodos,
-  //   initialData: [{description: 'hubkle guble', name: 'hello gauy'}]
-  // })
 
   // if (isPending) return 'Loading...';
 
   // if (error) return 'an error occured' + error.messages
 
   return (
-    <div className='wrapper'>
+    <div className={style.wrapper}>
+      <h1>hello</h1>
       <Layout/>
-      {/* <button onClick={() => jwtMutation.mutate()}>Content</button> */}
-      {document.cookie.includes('authToken') ? <p>Content</p> : <p>You should register first</p>}
     </div>
   )
 }

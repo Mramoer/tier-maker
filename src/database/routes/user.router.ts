@@ -1,15 +1,13 @@
 import * as dotenv from 'dotenv'
 import {body} from 'express-validator';
-import express from 'express'
+import express, { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import User from '../models/userSchema';
 import { collections } from '../services/database.service';
 
-export const userRouter = express.Router();
-
 dotenv.config();
-
+export const userRouter = express.Router();
 userRouter.use(express.json());
 
 const hashPassword = async (password: string) => {
@@ -31,7 +29,7 @@ userRouter.post('/registration',
     
     userData.password = await hashPassword(userData.password);
     await collections.users?.insertOne({...userData});
-    res.status(201).send('registred successfully')
+    res.status(201).send('<p>registred successfully</p>')
     } catch (error) {
         console.log(error)
     }
@@ -50,7 +48,7 @@ userRouter.post('/auth', async (req, res) => {
         if (user.email == email && isPassword) {
             const token = jwt.sign({email: email, id}, process.env.SECRET_KEY!, {expiresIn: "24h", algorithm: "HS256"});
             res.status(200)
-            .setHeader("Set-Cookie",`authToken=${token}; HttpOnly; Path=/auth; Max-Age=86400; Secure`)
+            .setHeader("Set-Cookie",`authToken=${token}; Path=/; Max-Age=86400`)
             .send(token)
         } 
         else {
@@ -59,7 +57,7 @@ userRouter.post('/auth', async (req, res) => {
     }
 })
 
-userRouter.post('/content', (req, res) => {
+userRouter.get('/content', (req, res) => {
     const token = req.headers['authorization']?.split(' ')[1];
     if (!token) {
         res.status(401).send('No token provided');
@@ -67,9 +65,23 @@ userRouter.post('/content', (req, res) => {
     else {
         try {
             jwt.verify(token, process.env.SECRET_KEY!)
-            res.redirect('/content/todos')
+            res.redirect('/content')
         } catch (error) {
             res.status(401).send('invalid or expired token')
         }
     }
 })
+
+userRouter.post('/logout', (req: Request, res: Response) => {
+    try {
+        if (req.cookies.authToken) {
+            res.clearCookie('authToken');
+            res.status(201).send('logout successfully')
+        }
+        res.status(400).send('cannot delete provided cookie');
+    } catch (error) {
+        console.error(error)
+        res.status(500).send('server-side issue occured')
+    }
+})                  
+

@@ -1,15 +1,11 @@
-// import React from 'react'
-// import { LoginForm } from './widgets/LoginForm'
-// import RegisterForm from './widgets/RegisterForm'
-import {BrowserRouter, Route} from 'react-router-dom'
-
+import { Link } from "react-router-dom"
+import './Layout.module.scss'
 
 const Layout = () => {
   return (
     <div className='layout'>
-        <BrowserRouter basename='/'>
-            <Route></Route>
-        </BrowserRouter>
+        <Link to={'/login'}>Log in</Link>
+        <Link to={'/reg'}>Create an account</Link>
     </div>
   )
 }

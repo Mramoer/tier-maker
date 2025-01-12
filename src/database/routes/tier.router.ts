@@ -38,12 +38,13 @@ tierRouter.get("/todos/:id", async (req: Request, res: Response) => {
 tierRouter.post("/create", async (req: Request, res: Response) => {
     try {
         const newItem = req.body as unknown as Tier[];
+        console.log(newItem)
         const result = await collections.tierlist?.insertOne(newItem);
         
         if (result) {
-            res.status(201).send(`Successfully created a new game with id ${result.insertedId}`);
+            res.status(201).send(`Successfully created a new tier item with id ${result.insertedId}`);
         } else {
-            res.status(500).send("Failed to create a new game.");
+            res.status(500).send("Failed to create a new tier item.");
         }
     } catch (error) {
         console.error(error);

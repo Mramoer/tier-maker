@@ -4,7 +4,7 @@ export default class Tier {
     constructor(
         public name: string,
         public description: string,
-        public id?: ObjectId,
+        public _id?: ObjectId | string,
     ) 
     {}
 }
