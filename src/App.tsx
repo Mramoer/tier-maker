@@ -1,8 +1,6 @@
 // import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Layout from './client/components/Layout';
 import style from './App.module.scss';
-import Tier from './database/models/tieritems';
-import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 

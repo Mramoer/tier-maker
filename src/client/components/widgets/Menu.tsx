@@ -1,4 +1,4 @@
-import { Link, redirect, useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 const Menu = () => {
        const navigate = useNavigate()
