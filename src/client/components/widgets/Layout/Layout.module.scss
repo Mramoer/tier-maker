@@ -1,0 +1,19 @@
+a {
+    font-weight: 500;
+    color: purple;
+    text-decoration: none; 
+    padding: 0.3em; 
+}
+
+a:hover {
+    color: rgb(151, 15, 151);
+    transition: color ease 200ms;
+}
+
+.layout {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    background-color: rgb(97, 132, 162);
+
+}

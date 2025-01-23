@@ -1,5 +1,5 @@
 // import { useMutation, useQueryClient } from '@tanstack/react-query'
-import Layout from './client/components/Layout';
+import Layout from '../components/widgets/Layout/Layout';
 import style from './App.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -47,8 +47,14 @@ function App() {
 
   return (
     <div className={style.wrapper}>
-      <h1>hello</h1>
       <Layout/>
+      <div> 
+        <h1>Create your first tierlist now!</h1>
+        <p>To start making your own tierlists you should <span 
+        onClick={() => {navigate('/login')}} className={style.signin}>
+          log in
+        </span> first</p>
+      </div>
     </div>
   )
 }

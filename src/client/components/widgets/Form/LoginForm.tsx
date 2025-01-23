@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
-import User from "../../../database/models/userSchema"
-import './Form.module.scss'
+import User from "../../../../database/models/userSchema"
+import style from './Form.module.scss'
 import { Link, useNavigate } from "react-router-dom"
 
 export const LoginForm = () => {
@@ -30,19 +30,15 @@ export const LoginForm = () => {
         }
       }
     })
-
-    const showUser = (user: User) => {
-      console.log(JSON.stringify(user))
-    }
     
     return (
-        <div>
+        <div className={style.formBody}>
           <Link to="/">Back</Link>
+          <h4>Log in your profile</h4>
           <form action="" name='auth'>
               <input type="text" value={logEmail} placeholder="John.doe@gmail.com" onChange={(e) => {setLogEmail(e.target.value)}}/>
-              <input type="text" value={logPassword} placeholder="**********" onChange={(e) => {setLogPassword(e.target.value)}} />
-              <button type="submit" onClick={(e) => {e.preventDefault(); loginMutation.mutateAsync({email: logEmail, password: logPassword})}}>Continue</button>
-              <button onClick={() => {showUser({email:logEmail, password:logPassword})}}>click</button>
+              <input type="password" value={logPassword} placeholder="**********" onChange={(e) => {setLogPassword(e.target.value)}} />
+              <button type="submit" className={style.confirmBtn} onClick={(e) => {e.preventDefault(); loginMutation.mutateAsync({email: logEmail, password: logPassword})}}>Continue</button>
           </form>
         </div>
     )

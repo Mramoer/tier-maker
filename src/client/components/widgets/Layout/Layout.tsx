@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
-import './Layout.module.scss'
+import style from './Layout.module.scss'
 
 const Layout = () => {
   return (
-    <div className='layout'>
-        <Link to={'/login'}>Log in</Link>
+    <div className={style.layout}>
+        <Link to={'/login'} className="Link">Log in</Link>
         <Link to={'/reg'}>Create an account</Link>
     </div>
   )

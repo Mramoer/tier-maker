@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
-import Tier from "../../database/models/tieritems"
-import Menu from "../components/widgets/Menu"
+import Tier from "../../../database/models/tieritems"
+import style from "./HomePage.module.scss";
+import Menu from "../../components/widgets/Menu/Menu";
+
 
 const HomePage = () => {
 
@@ -17,14 +19,16 @@ const HomePage = () => {
     <div>
     	<Menu/>
     		<div>HomePage</div>
+        <div className={style.stack}>    
     		{data?.map((tier) => {
         	return (
-        	<div key={tier._id?.toString()}>
-          <h3>{tier?.name}</h3>
-          <h4>{tier?.description}</h4>
-        	</div>
+        	    <div key={tier._id?.toString()} className={style.tierItem} >
+                <h3>{tier?.name}</h3>
+                <h4>{tier?.description}</h4>
+        	    </div>
         	)
     		})}
+        </div>
     </div>
   )
 }

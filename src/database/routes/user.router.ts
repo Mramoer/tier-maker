@@ -1,14 +1,17 @@
 import * as dotenv from 'dotenv'
 import {body} from 'express-validator';
-import express, { Request, Response } from 'express'
-import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
-import User from '../models/userSchema';
+import express, { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer';
 import { collections } from '../services/database.service';
+import User from '../models/userSchema';
 
-dotenv.config();
+dotenv.config();    
 export const userRouter = express.Router();
 userRouter.use(express.json());
+
+
 
 const hashPassword = async (password: string) => {
     const salt = await bcrypt.genSalt(10);
@@ -16,25 +19,96 @@ const hashPassword = async (password: string) => {
     return hashedPassword
 }
 
-userRouter.post('/registration', 
-    body('email').notEmpty().isEmail(), 
-    body('password').notEmpty().isStrongPassword() , async (req, res) => {
-    try {
-        const userData: User = req.body;
-        const existingEmail = await collections.users?.findOne({email: userData.email})
-    if (existingEmail) {
-        res.status(301);
-        throw new Error('email already exists')
-    }
+// userRouter.post('/registration', 
+//     body('email').notEmpty().isEmail(), 
+//     body('password').notEmpty().isStrongPassword() , async (req, res) => {
+//     try {
+//         const userData: User = req.body;
+//         const existingEmail = await collections.users?.findOne({email: userData.email})
+//     if (existingEmail) {
+//         res.status(301);
+//         throw new Error('email already exists')
+//     }
     
-    userData.password = await hashPassword(userData.password);
-    await collections.users?.insertOne({...userData});
-    res.status(201).send('<p>registred successfully</p>')
+//     userData.password = await hashPassword(userData.password);
+//     await collections.users?.insertOne({...userData});
+//     res.status(201).send('<p>registred successfully</p>')
+//     } catch (error) {
+//         console.log(error)
+//     }
+    
+// })
+
+userRouter.post('/confirmation', async (req: Request, res: Response) => {
+    const userData = req.body;
+    try {
+        const existingEmail = await collections.users?.findOne({email: userData.email})
+        if (existingEmail) {
+            res.status(401).send('email already exists');
+        }
+        else {
+            const token = crypto.randomUUID().toString();
+            userData.password = await hashPassword(userData.password);
+            await collections.temp?.insertOne({...userData, token});
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.mailersend.net',
+                auth: {
+                    user: 'MS_BJWERX@trial-z86org8q2ezgew13.mlsender.net',
+                    pass: 'NxAp9VnqvXzI0JQK'
+                }
+            })
+            const mailOptions = {
+                from: 'MS_BJWERX@trial-z86org8q2ezgew13.mlsender.net',
+                to: userData.email,
+                subject: 'TierMaker - Подтверждение регистрации',
+                html: `<a href="http://localhost:3000/registration?token=${token}">Подтвердить регистрацию</a>`
+            }
+
+            transporter.sendMail(mailOptions, async (err, info) => {
+                if (err) {
+                    console.error('Ошибка при отправке письма:', err);
+                    res.status(505).send('couldnt sent email')
+                } else {
+                    res.status(200).send('email successfully sent');
+                }
+            })
+        }
     } catch (error) {
-        console.log(error)
+        console.error(error)
+    }    
+})
+
+userRouter.get('/registration', async (req, res) => {
+    const token = req.query.token;
+    const tempUser = await collections.temp?.findOne({token})
+    if (tempUser) {
+        const userData = await collections.temp?.findOne({token});
+        await collections.users?.insertOne({...userData})
+        await collections.temp?.deleteOne({token})
+        res.status(200).send('successfully registred')
+    } else {
+        res.status(403).send('token doesnt exist');
     }
     
 })
+
+// userRouter.post('/registration', 
+//     body('email').notEmpty().isEmail(), 
+//     body('password').notEmpty().isStrongPassword(), 
+//     async (req, res) => {
+//     try {
+//         const userData: User = req.body;
+//         const existingEmail = await collections.users?.findOne({email: userData.email})
+//         if (existingEmail) {
+//           res.status(301);
+//           throw new Error('email already exists')
+//         }
+        
+//     } catch (error) {
+//         console.log(error)
+//     }}  
+    
+// )
 
 userRouter.post('/auth', async (req, res) => {
     const {email, password, id}: User = req.body;
@@ -46,9 +120,9 @@ userRouter.post('/auth', async (req, res) => {
     else {
         const isPassword = await bcrypt.compare(password, user.password)
         if (user.email == email && isPassword) {
-            const token = jwt.sign({email: email, id}, process.env.SECRET_KEY!, {expiresIn: "24h", algorithm: "HS256"});
+            const token = jwt.sign({email: email, id}, process.env.SECRET_KEY!, {algorithm: "HS256", expiresIn: "24h"});
             res.status(200)
-            .setHeader("Set-Cookie",`authToken=${token}; Path=/; Max-Age=86400`)
+            .setHeader("Set-Cookie",`authToken=${token}; Path=/; Max-Age=84600`)
             .send(token)
         } 
         else {

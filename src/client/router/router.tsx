@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import {RegistrationForm} from "../components/widgets/RegistrationForm";
-import {LoginForm} from "../components/widgets/LoginForm";
-import App from "../../App";
-import HomePage from "../pages/HomePage";
-import TierForm from "../components/widgets/TierForm";
+import {RegistrationForm} from "../components/widgets/Form/RegistrationForm";
+import {LoginForm} from "../components/widgets/Form/LoginForm";
+import App from "../App/App";
+import HomePage from "../pages/HomePage/HomePage";
+import TierForm from "../components/widgets/Form/TierForm";
 
 const loginRouting = [
     {

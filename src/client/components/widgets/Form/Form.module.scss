@@ -1,0 +1,57 @@
+form > button {
+    margin-top: 2em;
+}
+
+form > input[type=password] {
+    margin-top: 1em;
+}
+
+.wrappers {
+    background-color: rgb(97, 132, 162);
+    width: 500px;
+}
+
+.formBody {
+    width: 18%;
+    height: 45%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding: 0.5em;
+    border: 0.1em rgb(19, 16, 16) solid;
+    border-radius: 9px;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.formBody > form {
+    height: 70%;
+    width: 90%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    margin: auto;
+    gap: 0.5em;
+    margin-top: 10%;
+}
+
+.formBody > form > input {
+    width: 80%;
+}
+
+.confirmBtn {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: purple;
+    justify-self: end;
+    position: absolute;
+    bottom: 10%;
+}
+
+#root {
+    width: 50%;
+    height: 50%;
+}
+
