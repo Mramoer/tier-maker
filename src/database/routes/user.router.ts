@@ -1,5 +1,4 @@
 import * as dotenv from 'dotenv'
-import {body} from 'express-validator';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -64,7 +63,7 @@ userRouter.post('/confirmation', async (req: Request, res: Response) => {
                 html: `<a href="http://localhost:3000/registration?token=${token}">Подтвердить регистрацию</a>`
             }
 
-            transporter.sendMail(mailOptions, async (err, info) => {
+            transporter.sendMail(mailOptions, async (err) => {
                 if (err) {
                     console.error('Ошибка при отправке письма:', err);
                     res.status(505).send('couldnt sent email')
@@ -141,7 +140,7 @@ userRouter.get('/content', (req, res) => {
             jwt.verify(token, process.env.SECRET_KEY!)
             res.redirect('/content')
         } catch (error) {
-            res.status(401).send('invalid or expired token')
+            res.status(401).send(`${error} /n invalid or expired token`)
         }
     }
 })

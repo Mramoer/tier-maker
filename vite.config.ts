@@ -2,9 +2,14 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import browserslist from 'browserslist';
 import {browserslistToTargets} from 'lightningcss';
+import eslint from '@nabla/vite-plugin-eslint';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), eslint({
+    eslintOptions: {
+      fix: true,
+    },
+  })],
   optimizeDeps: {
     include: ['**/*module.scss']
   },

@@ -36,7 +36,8 @@ export const LoginForm = () => {
           <Link to="/">Back</Link>
           <h4>Log in your profile</h4>
           <form action="" name='auth'>
-              <input type="text" value={logEmail} placeholder="John.doe@gmail.com" onChange={(e) => {setLogEmail(e.target.value)}}/>
+              <label htmlFor="email">Email</label>
+              <input type="text" id="email" value={logEmail} placeholder="John.doe@gmail.com" onChange={(e) => {setLogEmail(e.target.value)}}/>
               <input type="password" value={logPassword} placeholder="**********" onChange={(e) => {setLogPassword(e.target.value)}} />
               <button type="submit" className={style.confirmBtn} onClick={(e) => {e.preventDefault(); loginMutation.mutateAsync({email: logEmail, password: logPassword})}}>Continue</button>
           </form>

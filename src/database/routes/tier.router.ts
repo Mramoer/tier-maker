@@ -29,7 +29,7 @@ tierRouter.get("/todos/:id", async (req: Request, res: Response) => {
             res.status(200).send(tier);
         }
     } catch (error) {
-        res.status(404).send(`Unable to find matching document with id: ${req.params.id}`);
+        res.status(404).send(`${error} /n Unable to find matching document with id: ${req.params.id}`);
     }
 });
 
