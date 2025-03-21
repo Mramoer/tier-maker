@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
-import express, { Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
@@ -10,6 +11,9 @@ dotenv.config();
 export const userRouter = express.Router();
 userRouter.use(express.json());
 
+export function GET() {
+    return new Response('Hello from Vercel!');
+}
 
 
 const hashPassword = async (password: string) => {
@@ -76,6 +80,8 @@ userRouter.post('/confirmation', async (req: Request, res: Response) => {
         console.error(error)
     }    
 })
+
+
 
 userRouter.get('/registration', async (req, res) => {
     const token = req.query.token;
